@@ -84,7 +84,7 @@ export class UserService {
         });
     }
 
-    async changeImgProfile(filename : string , userId :number){
+    async changeImgProfile(path : string , userId :number){
         return await AppDataSource.transaction(async (manager) => {
 
             const userRepo = manager.getRepository(User);
@@ -95,7 +95,7 @@ export class UserService {
 
             if (dataUser.verified_at == null) { throw new BadRequestException('Verif code first'); }
 
-            dataUser.profile_img = filename;
+            dataUser.profile_img = path;
 
             return await userRepo.save(dataUser); // ✅ kalau semua sukses, ini yang dikembalikan
         });

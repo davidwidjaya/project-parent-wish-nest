@@ -8,6 +8,9 @@ export class Children {
   @Column({ type: 'varchar', length: 100 })
   fullname: string;
 
+  @Column({ length: 100, nullable: true })
+  profile_img?: string;
+  
   @Column({ type: 'varchar', length: 100 })
   gender: string;
 
