@@ -1,18 +1,35 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserManualDto } from 'src/user/dto/create-user-manual.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { LoginManual } from './dto/login-manual.dto';
+import { OAuth2Client } from 'google-auth-library';
+
 
 @Controller('api/auth')
 export class AuthController {
-    constructor(private readonly usersService: UserService,private readonly authService: AuthService) { }
+    constructor(private readonly usersService: UserService, private readonly authService: AuthService) { }
 
-    @Get('google')
-    @UseGuards(AuthGuard('google'))
-    async googleAuth() { }
 
+    @Post('google/callback')
+    @HttpCode(HttpStatus.OK)
+
+    async loginWithGoogle(@Body('id_token') id_token: string) {
+
+        const authGoogle = await this.authService.authGoogle(id_token);
+
+
+
+        // Cek user di DB (atau bikin user baru)
+        // return JWT atau session
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'success login with google',
+            data: authGoogle,
+        };
+    }
 
     @Post('register')
     @HttpCode(HttpStatus.CREATED)
