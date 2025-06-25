@@ -26,7 +26,7 @@ export class AuthService {
         const payload = { sub: user.id_user, email: user.email };
         const token = this.jwtService.sign(payload);
 
-        return { access_token: token };
+        return { token: token };
     }
 
     async authGoogle(idToken: string) {
@@ -71,12 +71,12 @@ export class AuthService {
             const payload = { sub: user.id_user, email: user.email };
             const token = this.jwtService.sign(payload);
 
-            return { access_token: token };
+            return { token: token };
         } else {
 
             const payload_data = { sub: cekUser.id_user, email: cekUser.email };
             const token = this.jwtService.sign(payload_data);
-            return { access_token: token };
+            return { token: token };
         }
 
 

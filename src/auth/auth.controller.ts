@@ -25,9 +25,9 @@ export class AuthController {
         // return JWT atau session
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success login with google',
-            data: authGoogle,
+            data: authGoogle,       
         };
     }
 
@@ -38,7 +38,7 @@ export class AuthController {
         const createUser = await this.usersService.createUser(createUserDto);
 
         return {
-            statusCode: HttpStatus.CREATED,
+            status_code: HttpStatus.CREATED,
             message: 'success create user',
             data: createUser,
         };
@@ -51,7 +51,7 @@ export class AuthController {
         const createUser = await this.authService.login(loginManualDto);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success create user',
             data: createUser,
         };

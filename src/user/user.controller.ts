@@ -28,7 +28,7 @@ export class UserController {
         const createUser = await this.usersService.completeProfile(completeProfileDto, userId);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success complete profile',
             data: createUser,
         };
@@ -66,7 +66,7 @@ export class UserController {
         const createUser = await this.usersService.changeImgProfile(file.path, userId);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'Image uploaded successfully',
             data: {
                 filename: file.filename,

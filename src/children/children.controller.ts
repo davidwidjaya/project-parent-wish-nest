@@ -30,7 +30,7 @@ export class ChildrenController {
         const createUser = await this.childrenService.deleteChildren(userId,id_children);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success get list',
             data: createUser,
         };
@@ -48,7 +48,7 @@ export class ChildrenController {
         const createUser = await this.childrenService.listChildren(userId);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success get list',
             data: createUser,
         };
@@ -114,7 +114,7 @@ export class ChildrenController {
         const createUser = await this.childrenService.createChildrens(payload, userId);
 
         return {
-            statusCode: HttpStatus.CREATED,
+            status_code: HttpStatus.CREATED,
             message: 'success create children',
             data: createUser,
         };

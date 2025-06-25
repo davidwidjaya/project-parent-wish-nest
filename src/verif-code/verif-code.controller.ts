@@ -19,7 +19,7 @@ export class VerifCodeController {
         const data = await this.mailService.sendEmail( userId);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success send code to email',
             data: data,
         };
@@ -37,7 +37,7 @@ export class VerifCodeController {
         const data = await this.mailService.validataionCode( userId,code);
 
         return {
-            statusCode: HttpStatus.OK,
+            status_code: HttpStatus.OK,
             message: 'success validation code',
             data: data,
         };
