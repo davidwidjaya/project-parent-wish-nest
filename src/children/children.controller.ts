@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Query, Req, UploadedFile, UseFilters, UseInterceptors } from '@nestjs/common';
 // import { CreateChildrens } from './dto/create-children.dto';
 import { ChildrenService } from './children.service';
 import { CreateChildrensDto } from './dto/create-children.dto';
@@ -7,8 +7,10 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { AppDataSource } from 'data-source/data-source';
 import { Children } from './entity/children.entity';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Controller('api/children')
+@UseFilters(new HttpExceptionFilter())
 export class ChildrenController {
     constructor(
         private childrenService: ChildrenService

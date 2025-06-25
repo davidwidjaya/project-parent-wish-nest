@@ -1,13 +1,15 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UnauthorizedException, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserManualDto } from 'src/user/dto/create-user-manual.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { LoginManual } from './dto/login-manual.dto';
 import { OAuth2Client } from 'google-auth-library';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 
 @Controller('api/auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthController {
     constructor(private readonly usersService: UserService, private readonly authService: AuthService) { }
 
@@ -27,7 +29,7 @@ export class AuthController {
         return {
             status_code: HttpStatus.OK,
             message: 'success login with google',
-            data: authGoogle,       
+            data: authGoogle,
         };
     }
 

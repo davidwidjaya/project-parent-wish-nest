@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UploadedFile, UseFilters, UseInterceptors } from '@nestjs/common';
 import { CreateUserManualDto } from './dto/create-user-manual.dto';
 import { UserService } from './user.service';
 import { CompleteProfileDto } from './dto/complete-profile.dto';
@@ -6,9 +6,11 @@ import { JwtService } from '@nestjs/jwt';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 
 @Controller('api/user')
+@UseFilters(new HttpExceptionFilter())
 export class UserController {
 
     constructor(

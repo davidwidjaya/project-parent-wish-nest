@@ -1,9 +1,11 @@
-import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Req, UseFilters } from '@nestjs/common';
 import { VerifCodeService } from './verif-code.service';
 import { VerifCodeDto } from './dto/verif-code.dto';
 import { Code } from 'typeorm';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Controller('api/verif-code')
+@UseFilters(new HttpExceptionFilter())
 export class VerifCodeController {
     constructor(private mailService: VerifCodeService) { }
 
@@ -16,7 +18,7 @@ export class VerifCodeController {
         const userId = user?.sub || user.id; // tergantung isi token-nya
 
         // return userId;
-        const data = await this.mailService.sendEmail( userId);
+        const data = await this.mailService.sendEmail(userId);
 
         return {
             status_code: HttpStatus.OK,
@@ -27,14 +29,14 @@ export class VerifCodeController {
 
 
     @Post('validation-code')
-    async validationCode(@Req() req: Request,@Body('code') code: string) {
+    async validationCode(@Req() req: Request, @Body('code') code: string) {
 
         const user = req['user'];
         // console.log(user)
         const userId = user?.sub || user.id; // tergantung isi token-nya
 
         // return userId;
-        const data = await this.mailService.validataionCode( userId,code);
+        const data = await this.mailService.validataionCode(userId, code);
 
         return {
             status_code: HttpStatus.OK,
