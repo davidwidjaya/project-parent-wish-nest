@@ -50,6 +50,9 @@ export class AppModule {
         { path: 'api/children/add', method: RequestMethod.POST },
         { path: 'api/children/list', method: RequestMethod.GET },
 
+
+        { path: 'api/user/upload-image-profile', method: RequestMethod.POST },
+
         // // proteksi 1 endpoint POST
         // { path: 'user/complete-profile', method: RequestMethod.POST },
       );

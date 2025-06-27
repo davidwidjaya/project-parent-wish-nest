@@ -1,13 +1,16 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UseFilters } from '@nestjs/common';
 import { VerifCodeDto } from './dto/verif-code.dto';
 import { AppDataSource } from 'data-source/data-source';
 import { User } from 'src/user/entity/user.entity';
 import { VerifCodeEmail } from './entity/verif-code-email.entity';
 import { use } from 'passport';
 import { IsNull } from 'typeorm';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Injectable()
+@UseFilters(new HttpExceptionFilter())
+
 export class VerifCodeService {
     constructor(private mailerService: MailerService) { }
 

@@ -1,10 +1,13 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException, UseFilters } from '@nestjs/common';
 // import { CreateChildrens } from './dto/create-children.dto';
 import { AppDataSource } from 'data-source/data-source';
 import { Children } from './entity/children.entity';
 import { CreateChildrensDto } from './dto/create-children.dto';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Injectable()
+@UseFilters(new HttpExceptionFilter())
+
 export class ChildrenService {
     private childrenRepo = AppDataSource.getRepository(Children);
 

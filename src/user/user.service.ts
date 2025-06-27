@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UseFilters } from '@nestjs/common';
 import { AppDataSource } from 'data-source/data-source';
 import { User } from './entity/user.entity';
 import { CreateUserManualDto } from './dto/create-user-manual.dto';
@@ -6,8 +6,10 @@ import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import * as bcrypt from 'bcrypt';
 import { CompleteProfileDto } from './dto/complete-profile.dto';
 import { JwtService } from '@nestjs/jwt';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Injectable()
+@UseFilters(new HttpExceptionFilter())
 export class UserService {
     // private userRepo = AppDataSource.getRepository(User);
 
@@ -87,12 +89,17 @@ export class UserService {
     async changeImgProfile(path : string , userId :number){
         return await AppDataSource.transaction(async (manager) => {
 
+            
+            console.log('dwq');
+
             const userRepo = manager.getRepository(User);
 
             const dataUser = await userRepo.findOneBy({ id_user: userId });
 
             if (!dataUser) { throw new BadRequestException('User not found'); }
 
+
+            console.log(userId);
             if (dataUser.verified_at == null) { throw new BadRequestException('Verif code first'); }
 
             dataUser.profile_img = path;

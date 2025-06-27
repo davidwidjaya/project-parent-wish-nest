@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, UseFilters } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -6,8 +6,11 @@ import { AppDataSource } from 'data-source/data-source';
 import { User } from 'src/user/entity/user.entity';
 import { LoginManual } from './dto/login-manual.dto';
 import { OAuth2Client } from 'google-auth-library';
+import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 
 @Injectable()
+@UseFilters(new HttpExceptionFilter())
+
 export class AuthService {
     private userRepo = AppDataSource.getRepository(User);
 

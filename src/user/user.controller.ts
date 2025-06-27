@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UploadedFile, UseFilters, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UploadedFile, UseFilters, UseInterceptors } from '@nestjs/common';
 import { CreateUserManualDto } from './dto/create-user-manual.dto';
 import { UserService } from './user.service';
 import { CompleteProfileDto } from './dto/complete-profile.dto';
@@ -65,12 +65,18 @@ export class UserController {
         const user = req['user']; // pastikan pakai JWT guard
         const userId = user?.sub || user?.id;
 
-        const upload_img = await this.usersService.changeImgProfile(file.path, userId);
+        
+        console.log(userId)
+        if (!file) {
+            throw new BadRequestException('File not found');
+        }
+        // return file;
+        const createUser = await this.usersService.changeImgProfile(file.path, userId);
 
         return {
             status_code: HttpStatus.OK,
             message: 'Image uploaded successfully',
-            data: null,
+            data: null
         };
     }
 }
