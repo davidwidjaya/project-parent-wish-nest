@@ -65,16 +65,12 @@ export class UserController {
         const user = req['user']; // pastikan pakai JWT guard
         const userId = user?.sub || user?.id;
 
-        const createUser = await this.usersService.changeImgProfile(file.path, userId);
+        const upload_img = await this.usersService.changeImgProfile(file.path, userId);
 
         return {
             status_code: HttpStatus.OK,
             message: 'Image uploaded successfully',
-            data: {
-                filename: file.filename,
-                path: file.path,
-                userId,
-            },
+            data: null,
         };
     }
 }
