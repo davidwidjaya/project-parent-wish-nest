@@ -7,11 +7,12 @@ import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'project-david',
-    entities: [User,VerifCodeEmail,Children],
-    synchronize: true, // false di production
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '3306'),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    entities: [User, VerifCodeEmail, Children],
+    synchronize: true, // false for production
 });
+
