@@ -64,6 +64,7 @@ export class AuthService {
                 google_id: sub,
                 profile_img: picture,
                 step: "step_verif_code",
+                verified_at : now
             };
 
             const user = this.userRepo.create(data);
