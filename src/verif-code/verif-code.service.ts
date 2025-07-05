@@ -28,7 +28,7 @@ export class VerifCodeService {
             if (!dataUser) { throw new BadRequestException('User not found'); }
 
             const tmp_code = Number(code);
-            const dataCode = await verifRepo.findOneBy({ user_id: dataUser.id_user, code: tmp_code, deleted_at: IsNull() });
+            const dataCode = await verifRepo.findOneBy({ user_id: dataUser.id_user, code: tmp_code, deleted_at: IsNull(), type: 'verif_account' });
 
             if (!dataCode) { throw new BadRequestException('code invalid'); }
 
@@ -45,7 +45,7 @@ export class VerifCodeService {
             const tmp_user = {
                 ...dataUser,
                 step: "step_edit_profile",
-                verified_at : now
+                verified_at: now
             };
 
             const user = await userRepo.save(tmp_user);
@@ -90,7 +90,9 @@ export class VerifCodeService {
 
             const data = {
                 code: generataCode,
-                user_id: dataUser.id_user
+                user_id: dataUser.id_user,
+                type: "verif_account"
+
             };
 
 

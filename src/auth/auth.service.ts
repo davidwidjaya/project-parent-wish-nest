@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, UseFilters } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException, UseFilters } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +7,10 @@ import { User } from 'src/user/entity/user.entity';
 import { LoginManual } from './dto/login-manual.dto';
 import { OAuth2Client } from 'google-auth-library';
 import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
+import { MailerService } from '@nestjs-modules/mailer';
+import { VerifCodeEmail } from 'src/verif-code/entity/verif-code-email.entity';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { IsNull } from 'typeorm';
 
 @Injectable()
 @UseFilters(new HttpExceptionFilter())
@@ -17,7 +21,84 @@ export class AuthService {
     constructor(
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
+        private mailerService: MailerService
     ) { }
+
+    async forgotPassword(userId, dto: ForgotPasswordDto) {
+
+        return await AppDataSource.transaction(async (manager) => {
+
+            const userRepo = manager.getRepository(User);
+
+            const verifRepo = manager.getRepository(VerifCodeEmail);
+
+            const dataUser = await userRepo.findOneBy({ id_user: userId });
+
+            if (!dataUser) { throw new BadRequestException('User not found'); }
+
+            const tmp_code = Number(dto.code);
+            const dataCode = await verifRepo.findOneBy({ user_id: dataUser.id_user, code: tmp_code, deleted_at: IsNull(), type: 'forgot_password' });
+
+            if (!dataCode) { throw new BadRequestException('code invalid'); }
+
+            const now = new Date();
+
+            const tmp_data_core = {
+                ...dataCode,
+                deleted_at: now
+            }
+
+            await verifRepo.save(tmp_data_core);
+
+            const hashedPassword = await bcrypt.hash(dto.new_password, 10);
+
+            dataUser.password = hashedPassword;
+
+            const user = await userRepo.save(dataUser);
+
+            return user
+        });
+    }
+
+    async sendForgotPassword(userId) {
+        return await AppDataSource.transaction(async (manager) => {
+
+            const userRepo = manager.getRepository(User);
+
+            const verifRepo = manager.getRepository(VerifCodeEmail);
+
+            const dataUser = await userRepo.findOneBy({ id_user: userId });
+
+            if (!dataUser) { throw new BadRequestException('User not found'); }
+
+
+            const generataCode = Math.floor(1000 + Math.random() * 9000);
+
+            const to = dataUser.email;
+            const subject = "Forgot Password";
+            const content = "aplikasi test"
+
+            // return generataCode
+            await this.mailerService.sendMail({
+                to,
+                subject,
+                text: content,
+                html: `<b>you code  is ${generataCode}</b>`, // opsional
+            });
+
+            const data = {
+                code: generataCode,
+                user_id: dataUser.id_user,
+                type: "forgot_password"
+            };
+
+
+
+            return await verifRepo.save(data); // ✅ kalau semua sukses, ini yang dikembalikan
+        });
+    }
+
+
 
     async login(dto: LoginManual) {
         const user = await this.userRepo.findOneBy({ email: dto.email });
@@ -64,7 +145,7 @@ export class AuthService {
                 google_id: sub,
                 profile_img: picture,
                 step: "step_verif_code",
-                verified_at : now
+                verified_at: now
             };
 
             const user = this.userRepo.create(data);
