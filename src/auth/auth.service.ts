@@ -83,7 +83,7 @@ export class AuthService {
                 to,
                 subject,
                 text: content,
-                html: `<b>you code  is ${generataCode}</b>`, // opsional
+                html: `<b>you code  is https://api.parent-wish.com/reset-password?token=${generataCode}</b>`, // opsional
             });
 
             const data = {
