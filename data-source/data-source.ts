@@ -1,5 +1,6 @@
 // src/data-source.ts
 import { Children } from 'src/children/entity/children.entity';
+import { Task } from 'src/task/entity/task.entity';
 import { User } from 'src/user/entity/user.entity';
 import { VerifCodeEmail } from 'src/verif-code/entity/verif-code-email.entity';
 import { DataSource } from 'typeorm';
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'railway',
-    entities: [User, VerifCodeEmail, Children],
+    entities: [User,VerifCodeEmail,Children,Task],
     synchronize: process.env.NODE_ENV !== 'production', // false for production
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     logging: true, // Enable logging to debug connection issues

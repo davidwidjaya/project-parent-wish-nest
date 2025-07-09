@@ -8,6 +8,7 @@ import { ChildrenModule } from './children/children.module';
 import { VerifCodeModule } from './verif-code/verif-code.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthMiddleware } from './auth/auth.middleware';
       secret: process.env.JWT_SECRET || 'rahasia_jangan_bocor',
       signOptions: { expiresIn: '1d' },
     }),
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -43,7 +45,11 @@ export class AppModule {
         // { path: 'user/profile', method: RequestMethod.GET },
 
         // // proteksi semua route di /user/core
+        { path: 'api/auth/send-forgot-password', method: RequestMethod.POST },
+        { path: 'api/auth/forgot-password', method: RequestMethod.POST },
+
         { path: 'api/user/complete-profile', method: RequestMethod.POST },
+
 
         { path: 'api/verif-code/request-code', method: RequestMethod.POST },
         { path: 'api/verif-code/validation-code', method: RequestMethod.POST },
@@ -54,6 +60,12 @@ export class AppModule {
 
 
         { path: 'api/user/upload-image-profile', method: RequestMethod.POST },
+
+
+        { path: 'api/task/add', method: RequestMethod.POST },
+        { path: 'api/task/edit', method: RequestMethod.POST },
+        { path: 'api/task/delete', method: RequestMethod.DELETE },
+        { path: 'api/task/', method: RequestMethod.GET },
 
         // // proteksi 1 endpoint POST
         // { path: 'user/complete-profile', method: RequestMethod.POST },

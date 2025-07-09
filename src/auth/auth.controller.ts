@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { LoginManual } from './dto/login-manual.dto';
 import { OAuth2Client } from 'google-auth-library';
 import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 
 @Controller('api/auth')
@@ -20,8 +21,6 @@ export class AuthController {
     async loginWithGoogle(@Body('id_token') id_token: string) {
 
         const authGoogle = await this.authService.authGoogle(id_token);
-
-
 
         // Cek user di DB (atau bikin user baru)
         // return JWT atau session
@@ -56,6 +55,45 @@ export class AuthController {
             status_code: HttpStatus.OK,
             message: 'success create user',
             data: createUser,
+        };
+    }
+
+
+
+    @Post('send-forgot-password')
+    @HttpCode(HttpStatus.OK)
+    async sendForgotPassword(@Req() req: Request) {
+
+
+        const user = req['user']; // pastikan pakai JWT guard
+        const userId = user?.sub || user?.id;
+        // const id_children = req['id_children']; // pastikan pakai JWT guard
+
+        const createUser = await this.authService.sendForgotPassword(userId);
+
+        return {
+            status_code: HttpStatus.OK,
+            message: 'success create user',
+            data: createUser,
+        };
+    }
+
+
+    @Post('forgot-password')
+    @HttpCode(HttpStatus.OK)
+    async forgotPassword(@Req() req: Request, @Body() forgotPassowrdDto: ForgotPasswordDto) {
+
+
+        const user = req['user']; // pastikan pakai JWT guard
+        const userId = user?.sub || user?.id;
+        // const id_children = req['id_children']; // pastikan pakai JWT guard
+
+        const createUser = await this.authService.forgotPassword(userId, forgotPassowrdDto);
+
+        return {
+            status_code: HttpStatus.OK,
+            message: 'success change password',
+            data: null,
         };
     }
 }
