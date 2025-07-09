@@ -11,22 +11,24 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { TaskModule } from './task/task.module';
 
 @Module({
-  imports: [AuthModule, UserModule,
+  imports: [
+    AuthModule,
+    UserModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'project-david',
+      host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || '3306', 10),
+      username: process.env.DB_USERNAME || process.env.MYSQLUSER || 'root',
+      password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
+      database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'project-david',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // set ke false di production
+      synchronize: process.env.NODE_ENV !== 'production', // sync only if not production
     }),
     ChildrenModule,
     VerifCodeModule,
     JwtModule.register({
-      global: true, // ⬅️ ini bikin semua modul bisa akses JwtService
-      secret: 'rahasia_jangan_bocor',
+      global: true,
+      secret: process.env.JWT_SECRET || 'rahasia_jangan_bocor',
       signOptions: { expiresIn: '1d' },
     }),
     TaskModule,
