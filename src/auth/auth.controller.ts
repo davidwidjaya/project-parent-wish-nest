@@ -53,7 +53,7 @@ export class AuthController {
 
         return {
             status_code: HttpStatus.OK,
-            message: 'success create user',
+            message: 'success login',
             data: createUser,
         };
     }
@@ -73,7 +73,7 @@ export class AuthController {
 
         return {
             status_code: HttpStatus.OK,
-            message: 'success create user',
+            message: 'success send forgot password',
             data: createUser,
         };
     }
@@ -82,7 +82,7 @@ export class AuthController {
     @Post('forgot-password')
     @HttpCode(HttpStatus.OK)
     async forgotPassword(@Req() req: Request, @Body() forgotPassowrdDto: ForgotPasswordDto) {
-
+ 
 
         const user = req['user']; // pastikan pakai JWT guard
         const userId = user?.sub || user?.id;
