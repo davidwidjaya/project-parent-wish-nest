@@ -60,7 +60,7 @@ export class AuthService {
         });
     }
 
-    async sendForgotPassword(dto : SendForgotPassword) {
+    async sendForgotPassword(dto: SendForgotPassword) {
         return await AppDataSource.transaction(async (manager) => {
 
             const userRepo = manager.getRepository(User);
@@ -144,7 +144,7 @@ export class AuthService {
                 password: hashedPassword,
                 google_id: sub,
                 profile_img: picture,
-                step: "step_verif_code",
+                step: "step_edit_profile",
                 verified_at: now
             };
 
@@ -158,10 +158,18 @@ export class AuthService {
 
             return { token: token };
         } else {
-
             const payload_data = { sub: cekUser.id_user, email: cekUser.email };
             const token = this.jwtService.sign(payload_data);
-            return { token: token };
+
+            if (cekUser.step == 'step_verif_code') {
+
+                cekUser.step = "step_edit_profile"
+                await this.userRepo.save(cekUser);
+            }
+            // cekUser.step = "";
+
+
+            return { token: token, step: cekUser.step };
         }
 
 
