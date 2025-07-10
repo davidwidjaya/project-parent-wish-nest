@@ -12,9 +12,15 @@ import { TaskModule } from './task/task.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), '.well-known'),
+      serveRoot: '/.well-known',
+    }),
     AuthModule,
     UserModule,
     TypeOrmModule.forRoot({
