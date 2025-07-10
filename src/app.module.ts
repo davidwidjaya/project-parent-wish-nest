@@ -9,9 +9,15 @@ import { VerifCodeModule } from './verif-code/verif-code.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { TaskModule } from './task/task.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), '.well-known'),
+      serveRoot: '/.well-known',
+    }),
     AuthModule,
     UserModule,
     TypeOrmModule.forRoot({
