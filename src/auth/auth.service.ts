@@ -11,6 +11,9 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { VerifCodeEmail } from 'src/verif-code/entity/verif-code-email.entity';
 import { ForgotPasswordDto, SendForgotPassword } from './dto/forgot-password.dto';
 import { IsNull } from 'typeorm';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 @Injectable()
 @UseFilters(new HttpExceptionFilter())

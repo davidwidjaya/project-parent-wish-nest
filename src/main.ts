@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AppDataSource } from 'data-source/data-source';
 import { HttpExceptionFilter } from '../custom-validate/http-exception.filter';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   await AppDataSource.initialize(); // init koneksi DB

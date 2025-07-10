@@ -4,6 +4,9 @@ import { Task } from 'src/task/entity/task.entity';
 import { User } from 'src/user/entity/user.entity';
 import { VerifCodeEmail } from 'src/verif-code/entity/verif-code-email.entity';
 import { DataSource } from 'typeorm';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 export const AppDataSource = new DataSource({
     type: 'mysql',

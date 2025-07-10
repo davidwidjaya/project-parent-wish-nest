@@ -9,6 +9,9 @@ import { VerifCodeModule } from './verif-code/verif-code.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { TaskModule } from './task/task.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 @Module({
   imports: [
