@@ -7,4 +7,16 @@ export class ForgotPasswordDto {
 
     @IsNotEmpty()
     new_password: string
+
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+}
+
+
+export class SendForgotPassword {
+    
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 }

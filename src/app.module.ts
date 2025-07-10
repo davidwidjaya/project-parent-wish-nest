@@ -45,8 +45,8 @@ export class AppModule {
         // { path: 'user/profile', method: RequestMethod.GET },
 
         // // proteksi semua route di /user/core
-        { path: 'api/auth/send-forgot-password', method: RequestMethod.POST },
-        { path: 'api/auth/forgot-password', method: RequestMethod.POST },
+        // { path: 'api/auth/send-forgot-password', method: RequestMethod.POST },
+        // { path: 'api/auth/forgot-password', method: RequestMethod.POST },
 
         { path: 'api/user/complete-profile', method: RequestMethod.POST },
 

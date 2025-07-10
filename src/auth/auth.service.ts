@@ -9,7 +9,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { HttpExceptionFilter } from 'custom-validate/http-exception.filter';
 import { MailerService } from '@nestjs-modules/mailer';
 import { VerifCodeEmail } from 'src/verif-code/entity/verif-code-email.entity';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ForgotPasswordDto, SendForgotPassword } from './dto/forgot-password.dto';
 import { IsNull } from 'typeorm';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class AuthService {
         private mailerService: MailerService
     ) { }
 
-    async forgotPassword(userId, dto: ForgotPasswordDto) {
+    async forgotPassword(dto: ForgotPasswordDto) {
 
         return await AppDataSource.transaction(async (manager) => {
 
@@ -32,7 +32,7 @@ export class AuthService {
 
             const verifRepo = manager.getRepository(VerifCodeEmail);
 
-            const dataUser = await userRepo.findOneBy({ id_user: userId });
+            const dataUser = await userRepo.findOneBy({ email: dto.email });
 
             if (!dataUser) { throw new BadRequestException('User not found'); }
 
@@ -60,14 +60,14 @@ export class AuthService {
         });
     }
 
-    async sendForgotPassword(userId) {
+    async sendForgotPassword(dto : SendForgotPassword) {
         return await AppDataSource.transaction(async (manager) => {
 
             const userRepo = manager.getRepository(User);
 
             const verifRepo = manager.getRepository(VerifCodeEmail);
 
-            const dataUser = await userRepo.findOneBy({ id_user: userId });
+            const dataUser = await userRepo.findOneBy({ email: dto.email });
 
             if (!dataUser) { throw new BadRequestException('User not found'); }
 
