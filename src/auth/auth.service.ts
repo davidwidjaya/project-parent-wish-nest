@@ -164,7 +164,14 @@ export class AuthService {
             const payload = { sub: user.id_user, email: user.email };
             const token = this.jwtService.sign(payload);
 
-            return { token: token, step: data.step };
+            // return { token: token, step: data.step };
+            
+            const result = {
+                ...data,
+                token
+            }
+
+            return result;
         } else {
             const payload_data = { sub: cekUser.id_user, email: cekUser.email };
             const token = this.jwtService.sign(payload_data);
@@ -174,10 +181,15 @@ export class AuthService {
                 cekUser.step = "step_edit_profile"
                 await this.userRepo.save(cekUser);
             }
-            // cekUser.step = "";
 
 
-            return { token: token, step: cekUser.step };
+            const result = {
+                ...cekUser,
+                token
+            }
+
+
+            return result;
         }
 
 
