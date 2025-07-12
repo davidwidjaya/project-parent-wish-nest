@@ -10,13 +10,13 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
-    host: process.env.DB_HOST || 'mysql.railway.internal',
+    host: (process.env.DB_HOST == null) ? process.env.DB_HOST : 'mysql.railway.internal',
     port: parseInt(process.env.DB_PORT || '3306'),
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || 'railway',
+    database: 'project-david',
     entities: [User,VerifCodeEmail,Children,Task],
     synchronize: process.env.NODE_ENV !== 'production', // false for production
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-    logging: true, // Enable logging to debug connection issues
+    logging: true, // Enable logging to debug connection issues
 });
