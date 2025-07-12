@@ -1,3 +1,9 @@
-{
-    "test" :"dwqdwq"
-}
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "parent_wish",
+    "package_name": "com.example.parent_wish",
+    "sha256_cert_fingerprints":
+    ["50:1B:68:44:43:3A:F9:A2:FC:55:C4:27:75:2E:71:AD:E1:D9:68:4B:89:CA:00:77:80:51:83:AB:ED:12:A6:EC"]
+  }
+}]
