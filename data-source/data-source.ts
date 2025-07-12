@@ -16,7 +16,8 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [User, VerifCodeEmail, Children, Task],
-    synchronize: process.env.NODE_ENV !== 'production', // false for production
+    // synchronize: process.env.NODE_ENV !== 'production', // false for production
+    synchronize: true, // false for production
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     logging: true, // Enable logging to debug connection issues
 });
